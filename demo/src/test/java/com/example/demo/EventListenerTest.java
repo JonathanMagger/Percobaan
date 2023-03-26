@@ -1,8 +1,9 @@
 package com.example.demo;
 
-import com.example.demo.data.Car;
-import com.example.demo.processor.IdGeneratorBeanPostProcessor;
-import org.junit.jupiter.api.Assertions;
+import com.example.demo.listener.LoginSuccessAgainListener;
+import com.example.demo.listener.LoginSuccessListener;
+import com.example.demo.listener.UserListener;
+import com.example.demo.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -10,17 +11,19 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-public class BeanPostProcessorTest {
+public class EventListenerTest {
 
     @Configuration
     @Import({
-            Car.class,
-            IdGeneratorBeanPostProcessor.class
+            UserService.class,
+            LoginSuccessListener.class,
+            LoginSuccessAgainListener.class,
+            UserListener.class
     })
-    public static class TestConfiguration{
+    public static class TestConfiguration {
 
     }
-    
+
     private ConfigurableApplicationContext applicationContext;
 
     @BeforeEach
@@ -30,10 +33,11 @@ public class BeanPostProcessorTest {
     }
 
     @Test
-    void testCar(){
-        Car car = applicationContext.getBean(Car.class);
+    void testEvent() {
+        UserService userService = applicationContext.getBean(UserService.class);
+        userService.login("jon", "jon");
+        userService.login("jon", "salah");
+        userService.login("salah", "jon");
 
-        System.out.println(car.getId());
-        Assertions.assertNotNull(car.getId());
     }
 }

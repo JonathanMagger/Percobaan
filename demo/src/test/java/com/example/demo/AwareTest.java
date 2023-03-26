@@ -1,7 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.data.Car;
-import com.example.demo.processor.IdGeneratorBeanPostProcessor;
+import com.example.demo.service.AuthService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,17 +9,16 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-public class BeanPostProcessorTest {
+public class AwareTest {
 
     @Configuration
     @Import({
-            Car.class,
-            IdGeneratorBeanPostProcessor.class
+            AuthService.class
     })
     public static class TestConfiguration{
 
     }
-    
+
     private ConfigurableApplicationContext applicationContext;
 
     @BeforeEach
@@ -30,10 +28,12 @@ public class BeanPostProcessorTest {
     }
 
     @Test
-    void testCar(){
-        Car car = applicationContext.getBean(Car.class);
+    void testAware() {
 
-        System.out.println(car.getId());
-        Assertions.assertNotNull(car.getId());
+        AuthService authService = applicationContext.getBean(AuthService.class);
+
+        Assertions.assertEquals("com.example.demo.service.AuthService", authService.getBeanName());
+        Assertions.assertNotNull(authService.getApplicationContext());
+        Assertions.assertSame(applicationContext, authService.getApplicationContext());
     }
 }

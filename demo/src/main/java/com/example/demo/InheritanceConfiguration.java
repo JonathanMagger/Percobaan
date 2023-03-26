@@ -1,2 +1,10 @@
-package com.example.demo;public class InheritanceConfiguration {
+package com.example.demo;
+
+import com.example.demo.service.MerchantServiceImpl;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
+@Configuration
+@Import(MerchantServiceImpl.class)
+public class InheritanceConfiguration {
 }

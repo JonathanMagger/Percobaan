@@ -1,7 +1,7 @@
 package com.example.demo;
 
-import com.example.demo.data.Car;
-import com.example.demo.processor.IdGeneratorBeanPostProcessor;
+import com.example.demo.data.Foo;
+import com.example.demo.processor.FooBeanFactoryPostProcessor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,17 +10,14 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-public class BeanPostProcessorTest {
+public class BeanFactoryPostProcessorTest {
 
     @Configuration
-    @Import({
-            Car.class,
-            IdGeneratorBeanPostProcessor.class
-    })
+    @Import(FooBeanFactoryPostProcessor.class)
     public static class TestConfiguration{
 
     }
-    
+
     private ConfigurableApplicationContext applicationContext;
 
     @BeforeEach
@@ -30,10 +27,9 @@ public class BeanPostProcessorTest {
     }
 
     @Test
-    void testCar(){
-        Car car = applicationContext.getBean(Car.class);
+    void testBeanFactoryPostProcessor() {
 
-        System.out.println(car.getId());
-        Assertions.assertNotNull(car.getId());
+        Foo foo = applicationContext.getBean(Foo.class);
+        Assertions.assertNotNull(foo);
     }
 }

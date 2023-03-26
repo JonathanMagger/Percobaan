@@ -1,2 +1,7 @@
-package com.example.demo.repository;public class CategoryRepository {
+package com.example.demo.repository;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class CategoryRepository {
 }
